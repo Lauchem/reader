@@ -155,6 +155,21 @@
         </div>
         <div class="setting-wrapper">
           <div class="setting-title">
+            工具
+          </div>
+          <div class="setting-item">
+            <el-tag
+              type="info"
+              :effect="isNight ? 'dark' : 'light'"
+              class="setting-btn"
+              @click="$router.push('/project')"
+            >
+              课题生成
+            </el-tag>
+          </div>
+        </div>
+        <div class="setting-wrapper">
+          <div class="setting-title">
             书源设置
           </div>
           <div class="setting-item">

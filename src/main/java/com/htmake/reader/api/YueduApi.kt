@@ -17,6 +17,7 @@ import com.htmake.reader.config.BookConfig
 import io.legado.app.constant.DeepinkBookSource
 import com.htmake.reader.api.controller.BookController
 import com.htmake.reader.api.controller.BookSourceController
+import com.htmake.reader.api.controller.ProjectController
 import com.htmake.reader.api.controller.RssSourceController
 import com.htmake.reader.api.controller.UserController
 import com.htmake.reader.api.controller.WebdavController
@@ -122,15 +123,19 @@ class YueduApi : RestVerticle() {
         // 获取系统信息
         router.get("/reader3/getSystemInfo").coroutineHandler { getSystemInfo(it) }
 
-
         ////////// 接口部分
         val bookController = BookController(coroutineContext)
         val bookSourceController = BookSourceController(coroutineContext)
         val rssSourceController = RssSourceController(coroutineContext)
         val userController = UserController(coroutineContext)
+        val projectController = ProjectController(coroutineContext)
         val webdavController = WebdavController(coroutineContext, router) { ctx, error ->
             onHandlerError(ctx, error)
         }
+
+        router.post("/reader3/projectTemplate/import").coroutineHandler { projectController.importTemplate(it) }
+        router.get("/reader3/projectTemplate/list").coroutineHandler { projectController.listTemplates(it) }
+        router.post("/reader3/project/generate").coroutineHandler { projectController.generateDoc(it) }
 
         /** 书源模块 */
         router.post("/reader3/saveSource").coroutineHandler { bookSourceController.saveSource(it) }

@@ -21,6 +21,12 @@ const routes = [
     name: "Reader",
     component: () =>
       import(/* webpackChunkName: "reader" */ "../views/Reader.vue")
+  },
+  {
+    path: "/project",
+    name: "Project",
+    component: () =>
+      import(/* webpackChunkName: "project" */ "../views/ProjectGenerator.vue")
   }
 ];
 
