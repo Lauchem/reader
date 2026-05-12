@@ -59,7 +59,7 @@
               将要求文件拖到此处，或<em>点击选择</em>
             </div>
             <div class="el-upload__tip" slot="tip">
-              支持 .docx / .pdf / .txt；导入后会生成一个“章节模板”供选择
+              支持 .docx / .doc / .pdf / .txt / .xlsx / .zip；导入后会生成一个“章节模板”供选择
             </div>
           </el-upload>
           <div style="margin-top: 10px">
@@ -236,4 +236,3 @@ export default {
   font-weight: 600;
 }
 </style>
-

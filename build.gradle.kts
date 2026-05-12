@@ -122,6 +122,7 @@ dependencies {
     implementation("cn.hutool:hutool-crypto:5.8.0.M1")
 
     implementation("org.apache.poi:poi-ooxml:5.2.5")
+    implementation("org.apache.poi:poi-scratchpad:5.2.5")
     implementation("org.apache.pdfbox:pdfbox:2.0.30")
 
     // 转换繁体

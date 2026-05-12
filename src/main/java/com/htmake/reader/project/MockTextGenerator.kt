@@ -8,7 +8,7 @@ class MockTextGenerator : TextGenerator {
         section: ProjectTemplateSection
     ): String {
         val base = "本课题围绕《$topicTitle》开展，主持人为${host.unit}${host.title}${host.name}。"
-        return when (section.title) {
+        val text = when (section.title) {
             "选题依据" -> base + "选题聚焦中小学教育教学中的真实问题，强调可操作、可验证、可推广。"
             "研究背景与意义", "研究背景与目标" -> base + "从政策导向、学校实际与学情需求出发，阐明研究的必要性与价值。"
             "相关研究现状" -> base + "梳理国内外相关研究与典型实践，提炼已有成果与不足，明确本课题切入点。"
@@ -25,6 +25,25 @@ class MockTextGenerator : TextGenerator {
             "参考文献" -> "参考文献可包含教育政策文件、课程标准、核心期刊论文与相关专著等，按学校/地区要求格式整理。"
             else -> base + "围绕“问题—目标—策略—证据”主线展开撰写，确保逻辑完整、表述规范。"
         }
+        return applyWordLimit(text, section.guidelines ?: "")
+    }
+
+    private fun applyWordLimit(text: String, guidelines: String): String {
+        val m = Regex("(\\d{2,5})\\s*字").find(guidelines) ?: return text
+        val limit = m.groupValues.getOrNull(1)?.toIntOrNull() ?: return text
+        if (limit <= 0) return text
+        val sb = StringBuilder(text)
+        val padding = "本段以学校真实情境为依据，围绕问题提出、证据收集与改进策略进行阐述，确保表述具体可执行。"
+        while (sb.length < limit) {
+            if (!sb.endsWith("。")) {
+                sb.append("。")
+            }
+            sb.append(padding)
+        }
+        val max = (limit * 12) / 10
+        if (sb.length > max) {
+            return sb.substring(0, max).trimEnd('。') + "。"
+        }
+        return sb.toString()
     }
 }
-

@@ -15,14 +15,15 @@ data class ProjectGenerateRequest(
 
 data class ProjectTemplateSection(
     val title: String = "",
-    val guidelines: String = ""
+    val guidelines: String? = ""
 )
 
 data class ProjectTemplate(
     val id: String = "",
     val name: String = "",
     val docType: String = "",
-    val sections: List<ProjectTemplateSection> = listOf(),
+    val globalGuidelines: String? = "",
+    val requiredFields: List<String>? = listOf(),
+    val sections: List<ProjectTemplateSection>? = listOf(),
     val createdAt: Long = 0L
 )
-

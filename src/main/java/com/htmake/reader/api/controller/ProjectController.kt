@@ -9,6 +9,7 @@ import com.htmake.reader.project.ProjectTemplate
 import com.htmake.reader.project.ProjectTemplateSection
 import com.htmake.reader.project.RequirementsTemplateParser
 import com.htmake.reader.project.RequirementsTextExtractor
+import com.htmake.reader.project.ZipRequirementExpander
 import com.htmake.reader.utils.asJsonArray
 import com.htmake.reader.utils.convert
 import com.htmake.reader.utils.getWorkDir
@@ -52,17 +53,27 @@ class ProjectController(override val coroutineContext: CoroutineContext) : BaseC
                     dest.delete()
                 }
                 tmpFile.copyRecursively(dest, true)
-                rawText.append("\n").append(RequirementsTextExtractor.extract(dest))
+                if (safeName.lowercase().endsWith(".zip")) {
+                    val expandedDir = File(requirementsDir, "expanded")
+                    val files = ZipRequirementExpander.expand(dest, expandedDir)
+                    files.forEach { f ->
+                        rawText.append("\n").append(RequirementsTextExtractor.extract(f))
+                    }
+                } else {
+                    rawText.append("\n").append(RequirementsTextExtractor.extract(dest))
+                }
                 tmpFile.deleteRecursively()
             }
         }
 
-        val sections = RequirementsTemplateParser.parse(docType, rawText.toString())
+        val parsed = RequirementsTemplateParser.parseAll(docType, rawText.toString())
         val template = ProjectTemplate(
             id = templateId,
             name = templateName,
             docType = docType,
-            sections = sections,
+            globalGuidelines = parsed.globalGuidelines,
+            requiredFields = parsed.requiredFields,
+            sections = parsed.sections,
             createdAt = System.currentTimeMillis()
         )
 
@@ -101,7 +112,8 @@ class ProjectController(override val coroutineContext: CoroutineContext) : BaseC
         val userNameSpace = getUserNameSpace(context)
         val template = resolveTemplate(userNameSpace, docType, request.templateId)
 
-        val sectionTexts = template.sections.map { section ->
+        val templateSections = template.sections ?: DefaultProjectTemplates.forDocType(docType)
+        val sectionTexts = templateSections.map { section ->
             section to generator.generateSectionText(docType, request.topicTitle, request.host, section)
         }
 
@@ -136,6 +148,8 @@ class ProjectController(override val coroutineContext: CoroutineContext) : BaseC
             id = "default_$docType",
             name = "默认模板",
             docType = docType,
+            globalGuidelines = "",
+            requiredFields = listOf(),
             sections = DefaultProjectTemplates.forDocType(docType),
             createdAt = 0L
         )
