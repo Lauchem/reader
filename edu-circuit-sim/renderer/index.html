@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>电路仿真实验课件</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-title">电路仿真实验课件</div>
+          <div class="brand-sub">串并联 / 欧姆定律 / 测量与记录</div>
+        </div>
+        <nav class="nav" id="nav">
+          <button class="nav-btn is-active" data-view="sim">仿真实验</button>
+          <button class="nav-btn" data-view="records">实验记录</button>
+          <button class="nav-btn" data-view="quiz">练习评价</button>
+          <button class="nav-btn" data-view="about">使用说明</button>
+        </nav>
+      </header>
+
+      <main class="content">
+        <section class="view is-active" id="view-sim"></section>
+        <section class="view" id="view-records"></section>
+        <section class="view" id="view-quiz"></section>
+        <section class="view" id="view-about"></section>
+      </main>
+
+      <footer class="footer">
+        <div>建议分辨率 1366×768 或更高</div>
+        <div class="muted">数据默认保存在本机用户目录，可在“实验记录”中导出或清除</div>
+      </footer>
+    </div>
+
+    <script src="./circuit.js"></script>
+    <script src="./quiz.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
+

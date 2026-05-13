@@ -1,0 +1,16 @@
+{
+  "name": "edu-circuit-sim",
+  "version": "1.0.0",
+  "description": "小学/初中电路仿真实验课件（Windows桌面版）",
+  "main": "electron/main.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "electron-packager . \"电路仿真实验课件\" --platform=win32 --arch=x64 --out=dist --overwrite --icon=../assets/windows/reader.ico"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-packager": "^17.1.2"
+  }
+}
